@@ -1,12 +1,14 @@
-
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "piecemovement.h"
+#include <vector>
 
 using namespace sf;
 
 int squareSize = 100;
 
 Sprite pieces[32];
+std::vector<Sprite> moves;
 
 //will be manipulated when moving pieces around
 int board[8][8] =
@@ -41,16 +43,23 @@ void loadPieces(){
 int main()
 {
 
-    RenderWindow window(VideoMode(1200, 800), "Chess");
+    RenderWindow window(VideoMode(1200, 800), "Chess", Style::Close);
 
     Texture chessBoard;
     Texture chessPieces;
+    Texture validMoves;
+
+    piecemovement pm;
 
     if (!chessBoard.loadFromFile("chessboard.png"))
     {
         return EXIT_FAILURE;
     }
     if (!chessPieces.loadFromFile("chessPieces.png"))
+    {
+        return EXIT_FAILURE;
+    }
+    if (!validMoves.loadFromFile("validmoves.png"))
     {
         return EXIT_FAILURE;
     }
@@ -63,14 +72,31 @@ int main()
 
     Event event;
 
+    int moveState = 0;
+
     while (window.isOpen())
-    {
+    {        
+        
+
         while (window.pollEvent(event))
         {
-
-            if (event.type == Event::Closed)
+            
+            switch (event.type)
             {
-                window.close();
+
+                case Event::Closed:
+                    window.close();
+                    break;
+
+                case Event::MouseButtonPressed:
+                    if (event.mouseButton.button == Mouse::Left && boardSprite.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                        if (moveState == 0) {
+                            moves = pm.calculateValidMoves(board, event.mouseButton.x, event.mouseButton.y, &validMoves);
+                        }
+                    }
+
+                default:
+                    break;
             }
 
             
@@ -83,7 +109,10 @@ int main()
         {
             window.draw(pieces[i]);
         }
-
+        for (int i = 0; i < moves.size(); i++)
+        {
+            window.draw(moves[i]);
+        }
         window.display();
     }
 

@@ -18,5 +18,13 @@
     <ClCompile Include="chessproject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="piecemovement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="piecemovement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,7 +6,9 @@
 using namespace sf;
 
 std::vector<Sprite> piecemovement::calculateValidMoves(int board[][8], int x, int y, Texture *validMoves) {
-	int pieceType = board[y][x];
+	int squareX = x / 100;
+	int squareY = y / 100;
+	int pieceType = board[squareY][squareX];
 	std::vector<Sprite> moves;
 
 	switch (abs(pieceType))
@@ -28,7 +30,7 @@ std::vector<Sprite> piecemovement::calculateValidMoves(int board[][8], int x, in
 			break;
 
 		case 6:
-			moves = calculatePawnValidMoves(board, x, y, pieceType);
+			moves = calculatePawnValidMoves(board, squareX, squareY, pieceType);
 			break;
 
 		default:
@@ -62,18 +64,4 @@ std::vector<Sprite> piecemovement::calculatePawnValidMoves(int board[][8], int x
 	}
 
 	return moves;
-}
-
-int piecemovement::validatePieceMovement(int x, int y, int activeX, int activeY, std::vector<Sprite> moves, int board[][8]) {
-	for (int i = 0; i < moves.size(); i++) {
-		int moveX = moves[i].getPosition().x;
-		int moveY = moves[i].getPosition().y;
-		std::cout << "x=" << x << " y=" << y << " activeX=" << activeX << " activeY=" << activeY << std::endl;
-		if (x > moveX && x < moveX + 100 && y > moveY && y < moveY + 100)
-		{
-			std::swap(board[y / 100][x / 100], board[activeY][activeX]);
-			return 1;
-		}
-	}
-	return 0;
 }
