@@ -146,6 +146,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="chessproject.cpp" />
+    <ClCompile Include="piecemovement.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="piecemovement.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
