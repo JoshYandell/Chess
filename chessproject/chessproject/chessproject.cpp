@@ -40,6 +40,11 @@ void loadPieces(){
     }
 }
 
+void movePiece(std::vector<int> posToSwap){
+    board[posToSwap.at(1)][posToSwap.at(0)] = board[posToSwap.at(3)][posToSwap.at(2)];
+    board[posToSwap.at(3)][posToSwap.at(2)] = 0;
+}
+
 int main()
 {
 
@@ -73,6 +78,8 @@ int main()
     Event event;
 
     int moveState = 0;
+    int selectedPieceX = -1;
+    int selectedPieceY = -1;
 
     while (window.isOpen())
     {        
@@ -92,9 +99,32 @@ int main()
                     if (event.mouseButton.button == Mouse::Left && boardSprite.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
                         if (moveState == 0) {
                             moves = pm.calculateValidMoves(board, event.mouseButton.x, event.mouseButton.y, &validMoves);
+                            
+                            if (!moves.empty()) {
+                                selectedPieceX = event.mouseButton.x / 100;
+                                selectedPieceY = event.mouseButton.y / 100;
+                                moveState = 1;
+                            }
                         }
+                        else if (moveState == 1) {
+                            std::vector<Sprite> newMoves = pm.calculateValidMoves(board, event.mouseButton.x, event.mouseButton.y, &validMoves);
+                            if (!newMoves.empty()) {
+                                selectedPieceX = event.mouseButton.x / 100;
+                                selectedPieceY = event.mouseButton.y / 100;
+                                moves = newMoves;
+                                moveState = 1;
+                            }
+                            else {
+                                std::vector<int> posToSwap = pm.validateMove(moves, event.mouseButton.x, event.mouseButton.y, selectedPieceX, selectedPieceY);
+                                if (posToSwap[0] != -1) {
+                                    movePiece(posToSwap);
+                                    loadPieces();
+                                    moves.clear();
+                                    moveState = 0;
+                                }
+                            }
+                        }   
                     }
-
                 default:
                     break;
             }
