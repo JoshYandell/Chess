@@ -220,7 +220,7 @@ std::vector<Sprite> piecemovement::calculatePawnValidMoves(int board[][8], int x
 			moves.push_back(Sprite());
 			moves.back().setPosition(100 * (x - 1), 100 * (y + 1));
 		}
-		if (y == 1) {
+		if (y == 1 && board[y + 1][x] == 0) {
 			moves.push_back(Sprite());
 			moves.back().setPosition(100 * x, 100 * (y + 2));
 		}
@@ -238,7 +238,7 @@ std::vector<Sprite> piecemovement::calculatePawnValidMoves(int board[][8], int x
 			moves.push_back(Sprite());
 			moves.back().setPosition(100 * (x - 1), 100 * (y - 1));
 		}
-		if (y == 6) {
+		if (y == 6 && board[y - 1][x] == 0) {
 			moves.push_back(Sprite());
 			moves.back().setPosition(100 * x, 100 * (y - 2));
 		}
@@ -258,7 +258,6 @@ std::vector<int> piecemovement::validateMove(std::vector<Sprite> moves, int x, i
 			posToSwap.push_back(y/100);
 			posToSwap.push_back(sx);
 			posToSwap.push_back(sy);
-			std::cout << posToSwap.at(0) << " " << posToSwap.at(1) << " " << posToSwap.at(2) << " " << posToSwap.at(3) << std::endl;
 			break;
 		}
 	}
