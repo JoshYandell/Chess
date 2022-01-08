@@ -108,14 +108,14 @@ int main()
                         }
                         else if (moveState == 1) {
                             std::vector<Sprite> newMoves = pm.calculateValidMoves(board, event.mouseButton.x, event.mouseButton.y, &validMoves);
-                            if (!newMoves.empty()) {
+                            std::vector<int> posToSwap = pm.validateMove(moves, event.mouseButton.x, event.mouseButton.y, selectedPieceX, selectedPieceY);
+                            if (!newMoves.empty() && posToSwap.at(0) == -1) {
                                 selectedPieceX = event.mouseButton.x / 100;
                                 selectedPieceY = event.mouseButton.y / 100;
                                 moves = newMoves;
                                 moveState = 1;
                             }
                             else {
-                                std::vector<int> posToSwap = pm.validateMove(moves, event.mouseButton.x, event.mouseButton.y, selectedPieceX, selectedPieceY);
                                 if (posToSwap[0] != -1) {
                                     movePiece(posToSwap);
                                     loadPieces();
